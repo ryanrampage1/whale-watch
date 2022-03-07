@@ -1,2 +1,2 @@
-worker: node server.js
+worker: npm run app
 
