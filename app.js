@@ -1,5 +1,5 @@
 const { Client, MessageEmbed } = require('discord.js');
-const { botIntents, commands, prefix } = require('./config/config');
+const { botIntents, commands, prefix, addys, whales} = require('./config/config');
 const config = require('./config/config');
 const fetch = require('node-fetch');
 
@@ -27,17 +27,13 @@ client.on('messageCreate', async (msg) => {
         const reply = await getLastMsgs(address);
         msg.channel.send({ embeds: reply })
     } else if (userCmd == commands.whale && userArg in whales) {
-        var addy = adys.userArg
+        var addy = addys[userArg]
+        console.log(addy)
         const reply = await getLastMsgs(addy);
         msg.channel.send({ embeds: reply })
     } else {
-        msg.reply('LOL try again');
+        msg.reply('Thats not a command, try again');
     }
-
-    //   else if (userCmd === commands.lastMsgs) {
-    //     const reply = await getLastMsgs(msg);
-    //     msg.author.send({ embeds: reply });
-    //   }
 });
 
 const getLastMsgs = async (wallet) => {
