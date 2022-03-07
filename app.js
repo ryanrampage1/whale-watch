@@ -55,7 +55,7 @@ const getLastMsgs = async (wallet, whale) => {
         let meResponse = await getRequest
 
      let last15 = meResponse.filter(action => (action.type == 'buy' || action.type == 'buyNow'))
-        .slice(0, 15);
+        .slice(0, 10);
 
     console.log(last15)
 
