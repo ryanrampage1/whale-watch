@@ -83,7 +83,8 @@ client.on('ready', () => {
 });
 
 const startBot = () => {
-    client.login("OTQ4OTc2OTI1NzgxNjYzNzU0.YiDpog.BaZfhAQoob9SgMlLrcIAHDQQK-U");
+    var key = process.env.api_key;
+    client.login(key);
 };
 
 module.exports = startBot;
