@@ -74,7 +74,7 @@ const getLastMsgs = async (wallet, whale) => {
 
         let actionDone = "Bought"
         let color = "#00FFA3"
-        if(action.seller == wallet){
+        if(purchase.seller == wallet){
             actionDone = "Sold"
             color = "#DC1FFF"
         }
