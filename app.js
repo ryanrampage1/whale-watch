@@ -62,7 +62,7 @@ const getLastMsgs = async (wallet, whale) => {
       const embeds = [];
 
       last15.forEach((purchase, index) => {
-        let purchaseTime = new Date(purchase.blockTime)
+        let purchaseTime = new Date(purchase.blockTime).toString()
         let collection = purchase.collection.replace("_", " ") 
         
         let title = wallet
