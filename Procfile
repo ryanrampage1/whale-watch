@@ -1,2 +1,2 @@
-worker: node app
+worker: node server.js
 
