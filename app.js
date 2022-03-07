@@ -32,6 +32,7 @@ client.on('messageCreate', async (msg) => {
         const reply = await getLastMsgs(addy);
         msg.channel.send({ embeds: reply })
     } else {
+        console.log('invalid input')
         msg.reply('Thats not a command, try again');
     }
 });
@@ -49,7 +50,7 @@ const getLastMsgs = async (wallet) => {
         let meResponse = await getRequest
 
      let last15 = meResponse.filter(action => action.buyer == wallet && (action.type == 'buy' || action.type == 'buyNow'))
-        .slice(0, 15);
+        .slice(0, 5);
 
     console.log(last15)
 
