@@ -54,7 +54,7 @@ const getLastMsgs = async (wallet, whale) => {
 
         let meResponse = await getRequest
 
-     let last15 = meResponse.filter(action => action.buyer == wallet && (action.type == 'buy' || action.type == 'buyNow'))
+     let last15 = meResponse.filter(action => (action.type == 'buy' || action.type == 'buyNow'))
         .slice(0, 15);
 
     console.log(last15)
@@ -72,12 +72,20 @@ const getLastMsgs = async (wallet, whale) => {
             title = whale 
         }
 
+        let actionDone = "Bought"
+        let color = "#00FFA3"
+        if(action.seller == wallet){
+            actionDone = "Sold"
+            color = "#DC1FFF"
+        }
+
+
         const embed = new MessageEmbed()
-          .setColor('#00FFA3')
+          .setColor(color)
           .setURL(`https://solscan.io/tx/${purchase.signature}`)
-          .setTitle(`${collection} -> ${purchase.price}◎`) 
+          .setTitle(`${actionDone} ${collection} -> ${purchase.price}◎`) 
           .setFooter(purchaseTime)
-          .setDescription(`by ${title}`);
+          .setDescription(`By ${title}`);
 
         embeds.push(embed);
       }
