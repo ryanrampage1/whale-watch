@@ -7,12 +7,13 @@ const botIntents = [DIRECT_MESSAGES, GUILD_MESSAGES, GUILDS];
 const commands = {
   whale: 'whale',
   address: 'address',
+  listWhales: "list-whales"
 };
 
 const whales = {
   cozy: 'cozy',
   knox: 'knox',
-  bigBrain: 'bigbrain',
+  bigBrain: 'bigBrain',
   solHub: 'solHub',
   ravers: 'ravers',
 };

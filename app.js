@@ -21,15 +21,20 @@ client.on('messageCreate', async (msg) => {
 
     var useAddress = userArg == commands.address
 
-    if (userCmd === commands.whale && useAddress && userArg.length > 0) {
-        // Keepig this here, this is how to just reply in the channel to the person directly
-        // msg.reply("Loading last 5 ME purchases for wallet " + userArg);
-        const reply = await getLastMsgs(address);
+    if(userCmd == commands.listWhales) {
+        let whaleList = "Curent avaliable whales: "
+        for (let [key, value] of Object.entries(whales)) {
+            whaleList = whaleList + `${value}, `
+        }
+
+        msg.reply(whaleList);
+    } else if (userCmd === commands.whale && useAddress && userArg.length > 0) {
+        const reply = await getLastMsgs(address, "");
         msg.channel.send({ embeds: reply })
     } else if (userCmd == commands.whale && userArg in whales) {
         var addy = addys[userArg]
         console.log(addy)
-        const reply = await getLastMsgs(addy);
+        const reply = await getLastMsgs(addy, userArg);
         msg.channel.send({ embeds: reply })
     } else {
         console.log('invalid input')
@@ -37,7 +42,7 @@ client.on('messageCreate', async (msg) => {
     }
 });
 
-const getLastMsgs = async (wallet) => {
+const getLastMsgs = async (wallet, whale) => {
     let url = `https://api-mainnet.magiceden.dev/v2/wallets/${wallet}/activities?offset=0&limit=100`
    
     let getRequest = fetch(url, {
@@ -50,17 +55,27 @@ const getLastMsgs = async (wallet) => {
         let meResponse = await getRequest
 
      let last15 = meResponse.filter(action => action.buyer == wallet && (action.type == 'buy' || action.type == 'buyNow'))
-        .slice(0, 5);
+        .slice(0, 10);
 
     console.log(last15)
 
       const embeds = [];
 
       last15.forEach((purchase, index) => {
+        let purchaseTime = new Date(purchase.blockTime)
+        let collection = purchase.collection.replace("_", " ") 
+        
+        let title = wallet
+        if(whale.length > 0) { 
+            title = whale 
+        }
+
         const embed = new MessageEmbed()
           .setColor('#00FFA3')
-          .setTitle(purchase.collection)
-          .setDescription(`${purchase.price} SOL`);
+          .setURL(`https://solscan.io/tx/${purchase.signature}`)
+          .setTitle(title) 
+          .setFooter(purchaseTime)
+          .setDescription(`${collection} for ${purchase.price} SOL`);
 
         embeds.push(embed);
       }
