@@ -55,15 +55,17 @@ const getLastMsgs = async (wallet, whale) => {
         let meResponse = await getRequest
 
      let last15 = meResponse.filter(action => action.buyer == wallet && (action.type == 'buy' || action.type == 'buyNow'))
-        .slice(0, 10);
+        .slice(0, 15);
 
     console.log(last15)
 
       const embeds = [];
 
       last15.forEach((purchase, index) => {
-        let purchaseTime = new Date(purchase.blockTime).toString()
-        let collection = purchase.collection.replace("_", " ") 
+        let purchaseTime = new Date(purchase.blockTime *1000).toString().split(" (")[0]
+        
+        const replacer = new RegExp("_", 'g')
+        let collection = purchase.collection.replace(replacer, " ") 
         
         let title = wallet
         if(whale.length > 0) { 
@@ -73,9 +75,9 @@ const getLastMsgs = async (wallet, whale) => {
         const embed = new MessageEmbed()
           .setColor('#00FFA3')
           .setURL(`https://solscan.io/tx/${purchase.signature}`)
-          .setTitle(title) 
+          .setTitle(`${collection} -> ${purchase.price}◎`) 
           .setFooter(purchaseTime)
-          .setDescription(`${collection} for ${purchase.price} SOL`);
+          .setDescription(`by ${title}`);
 
         embeds.push(embed);
       }
