@@ -89,7 +89,12 @@ const getLastMsgs = async (wallet, whale) => {
     });
 
     let meResponse = await getRequest
+
     console.log(meResponse);
+
+    if (meResponse.errors !== undefined && meResponse.errors.length != 0) {
+        return []
+    }
 
     let last15 = meResponse.filter(action => (action.type == 'buy' || action.type == 'buyNow'))
         .slice(0, 10);
