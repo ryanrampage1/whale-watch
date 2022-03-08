@@ -2,7 +2,7 @@ const { Client, MessageEmbed } = require('discord.js');
 const { botIntents, commands, prefix, addys, whales} = require('./config/config');
 const config = require('./config/config');
 const fetch = require('node-fetch');
-const { getHashedName, getNameAccountKey, NameRegistryState, } = require("@bonfida/spl-name-service");
+const { getHashedName, getNameAccountKey, NameRegistryState, PublicKey } = require("@bonfida/spl-name-service");
   
 const client = new Client({
     intents: botIntents,
