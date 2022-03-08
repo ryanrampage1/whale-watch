@@ -2,8 +2,7 @@ const { Client, MessageEmbed } = require('discord.js');
 const { botIntents, commands, prefix, addys, whales} = require('./config/config');
 const config = require('./config/config');
 const fetch = require('node-fetch');
-const { getHashedName, getNameAccountKey, NameRegistryState } = require("@bonfida/spl-name-service");
-const { PublicKey, Connection, clusterApiUrl } = require("@solana/web3.js");
+const resolveDomain = require('./sol-name-resolve')
 
 const client = new Client({
     intents: botIntents,
@@ -61,28 +60,6 @@ const sendWhales = (msg) => {
     }
 
     msg.reply(whaleList);
-}
-
-const resolveDomain = async(domain) => {
-    const hashedName = await getHashedName(domain.replace(".sol", ""));
-    const nameAccountKey = await getNameAccountKey(
-        hashedName,
-        undefined,
-        new PublicKey("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx") // SOL TLD Authority
-    );
-    const owner = NameRegistryState.retrieve(
-        new Connection(clusterApiUrl("mainnet-beta")),
-        nameAccountKey
-    ).then(acct => {
-        return acct.owner.toBase58()
-    })
-    .catch( err => {
-        return `Could not resolve address ${domain}`
-    });
-
-    console.log(owner);
-
-    return owner
 }
 
 const getLastMsgs = async (wallet, whale) => {
