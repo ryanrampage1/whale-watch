@@ -34,31 +34,39 @@ client.on('messageCreate', async (msg) => {
             msg.reply(resolvedAddress)
         } else {
             const reply = await getLastMsgs(resolvedAddress, userArg);
-            sendEmbeds(msg, reply)
+            if (embeds.length == 0) {
+                msg.reply('No purchases or sales found.')
+            } else {
+                msg.channel.send({ embeds: reply })
+            }
         }
     } else if (userCmd === commands.whale && useAddress && userArg.length > 0) {
 
         const reply = await getLastMsgs(address, "");
-        sendEmbeds(msg, reply)
+        if (embeds.length == 0) {
+            msg.reply('No purchases or sales found.')
+        } else {
+            msg.channel.send({ embeds: reply })
+        }
+    
     } else if (userCmd == commands.whale && userArg in whales) {
 
         var addy = addys[userArg]
         console.log(addy)
         const reply = await getLastMsgs(addy, userArg);
-        sendEmbeds(msg, reply)
-    } else {
+        if (embeds.length == 0) {
+            msg.reply('No purchases or sales found.')
+        } else {
+            msg.channel.send({ embeds: reply })
+        }    } else {
 
         console.log('invalid input')
         msg.reply('Thats not a command, try again');
     }
 });
 
-const sendEmbeds = (message, embeds) => {
-    if (embeds.length == 0) {
-        message.reply('No purchases or sales found.')
-    } else {
-        message.channel.send({ embeds: reply })
-    }
+const sendEmbeds = (msg, embeds) => {
+
 }
 
 const sendWhales = (msg) => {
