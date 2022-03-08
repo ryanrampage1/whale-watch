@@ -7,7 +7,8 @@ const botIntents = [DIRECT_MESSAGES, GUILD_MESSAGES, GUILDS];
 const commands = {
   whale: 'whale',
   address: 'address',
-  listWhales: "list-whales"
+  listWhales: "list-whales",
+  resolve: "resolve"
 };
 
 const whales = {
@@ -19,7 +20,8 @@ const whales = {
   nine: "nine",
   hfp: "hfp",
   bustos: "bustos",
-  jords: "jords"
+  jords: "jords",
+  spoon: "spoon"
 };
 
 const addys = {
@@ -31,7 +33,8 @@ const addys = {
   nine: "HGEj9nJHdAWJKMHGGHRnhvb3i1XakELSRTn5B4otmAhU",
   hfp: "HFPaT6WKk9SkwtYVZ5m5Sqw7ZbyehGu9GHjsctigm49S",
   bustos: "Er6QJPusC1JsUqevTjFKXtYHbgCtJkyo1DNjEBWevWut",
-  jords: "8rvxqWArGREzNKxWXYFoAHDJDxMSiwTfQ7R4NWi5Ynbi"
+  jords: "8rvxqWArGREzNKxWXYFoAHDJDxMSiwTfQ7R4NWi5Ynbi",
+  spoon: "5PTTb8TBgRFPPg4T2TFnf2og6trXAygWYE1RPFiZPZ1h"
 };
 
 const prefix = '!';
