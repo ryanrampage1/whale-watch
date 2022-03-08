@@ -28,19 +28,27 @@ client.on('messageCreate', async (msg) => {
     } else if(userCmd == commands.listWhales) {
         sendWhales(msg)
     } else if(userCmd === commands.whale && useAddress && userArg.includes(`.sol`)) {
-        let address = await resolveDomain(address)
-        console.log(`${userArg} -> ${address}`)
-        const reply = await getLastMsgs(address, userArg);
-        msg.channel.send({ embeds: reply })
+       
+        let resolvedAddress = await resolveDomain(address)
+        console.log(`${address} -> ${resolvedAddress}`)
+        if(resolvedAddress.includes(`Could not resolve address`)) {
+            msg.reply(resolvedAddress)
+        } else {
+            const reply = await getLastMsgs(resolvedAddress, userArg);
+            msg.channel.send({ embeds: reply })
+        }
     } else if (userCmd === commands.whale && useAddress && userArg.length > 0) {
+       
         const reply = await getLastMsgs(address, "");
         msg.channel.send({ embeds: reply })
     } else if (userCmd == commands.whale && userArg in whales) {
+       
         var addy = addys[userArg]
         console.log(addy)
         const reply = await getLastMsgs(addy, userArg);
         msg.channel.send({ embeds: reply })
     } else {
+        
         console.log('invalid input')
         msg.reply('Thats not a command, try again');
     }
