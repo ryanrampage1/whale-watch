@@ -53,11 +53,11 @@ client.on('messageCreate', async (msg) => {
     }
 });
 
-const sendEmbeds = (msg, embeds) => {
+const sendEmbeds = (message, embeds) => {
     if (embeds.length == 0) {
-        msg.reply('No purchases or sales found.')
+        message.reply('No purchases or sales found.')
     } else {
-        msg.channel.send({ embeds: reply })
+        message.channel.send({ embeds: reply })
     }
 }
 
