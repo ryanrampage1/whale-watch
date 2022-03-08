@@ -1,5 +1,5 @@
 const { Client, MessageEmbed } = require('discord.js');
-const { botIntents, commands, prefix, addys, whales} = require('./config/config');
+const { botIntents, commands, prefix, addys, whales } = require('./config/config');
 const config = require('./config/config');
 const fetch = require('node-fetch');
 const resolveDomain = require('./sol-name-resolve')
@@ -11,7 +11,7 @@ const client = new Client({
 
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return;
-    if (!msg.content.startsWith(prefix)) return; 
+    if (!msg.content.startsWith(prefix)) return;
 
     const userInput = msg.content.slice(prefix.length);
     const userCmd = userInput.split(' ')[0]
@@ -22,32 +22,32 @@ client.on('messageCreate', async (msg) => {
 
     var useAddress = userArg == commands.address
 
-    if(userCmd == commands.resolve){
+    if (userCmd == commands.resolve) {
         msg.reply(await resolveDomain(userArg))
-    } else if(userCmd == commands.listWhales) {
+    } else if (userCmd == commands.listWhales) {
         sendWhales(msg)
-    } else if(userCmd === commands.whale && useAddress && address.includes(`.sol`)) {
-       
+    } else if (userCmd === commands.whale && useAddress && address.includes(`.sol`)) {
+
         let resolvedAddress = await resolveDomain(address)
         console.log(`${address} -> ${resolvedAddress}`)
-        if(resolvedAddress.includes(`Could not resolve address`)) {
+        if (resolvedAddress.includes(`Could not resolve address`)) {
             msg.reply(resolvedAddress)
         } else {
             const reply = await getLastMsgs(resolvedAddress, userArg);
             sendEmbeds(msg, reply)
         }
     } else if (userCmd === commands.whale && useAddress && userArg.length > 0) {
-       
+
         const reply = await getLastMsgs(address, "");
         sendEmbeds(msg, reply)
     } else if (userCmd == commands.whale && userArg in whales) {
-       
+
         var addy = addys[userArg]
         console.log(addy)
         const reply = await getLastMsgs(addy, userArg);
         sendEmbeds(msg, reply)
     } else {
-        
+
         console.log('invalid input')
         msg.reply('Thats not a command, try again');
     }
@@ -56,7 +56,7 @@ client.on('messageCreate', async (msg) => {
 const sendEmbeds = (msg, embeds) => {
     if (embeds.length == 0) {
         msg.reply('No purchases or sales found.')
-    } else { 
+    } else {
         msg.channel.send({ embeds: reply })
     }
 }
@@ -72,57 +72,57 @@ const sendWhales = (msg) => {
 
 const getLastMsgs = async (wallet, whale) => {
     let url = `https://api-mainnet.magiceden.dev/v2/wallets/${wallet}/activities?offset=0&limit=100`
-   
+
     let getRequest = fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     }).then(response => {
         return response.json()
-    }).catch(err => { 
+    }).catch(err => {
         console.log(err);
         return []
-     });
+    });
 
-        let meResponse = await getRequest
+    let meResponse = await getRequest
 
-     let last15 = meResponse.filter(action => (action.type == 'buy' || action.type == 'buyNow'))
+    let last15 = meResponse.filter(action => (action.type == 'buy' || action.type == 'buyNow'))
         .slice(0, 10);
 
-        // https://api-mainnet.magiceden.dev/v2/tokens/mint_address_here -- purchase.tokenMint
-        // https://api-mainnet.magiceden.dev/v2/tokens/DSkG9nk7Ex8JMXhFW1Gi2RDdhCLh98KoFf3e3x9PZa37
+    // https://api-mainnet.magiceden.dev/v2/tokens/mint_address_here -- purchase.tokenMint
+    // https://api-mainnet.magiceden.dev/v2/tokens/DSkG9nk7Ex8JMXhFW1Gi2RDdhCLh98KoFf3e3x9PZa37
 
     console.log(last15)
 
-      const embeds = [];
+    const embeds = [];
 
-      last15.forEach((purchase, index) => {
-        let purchaseTime = new Date(purchase.blockTime *1000).toString().split(" (")[0]
-        
+    last15.forEach((purchase, index) => {
+        let purchaseTime = new Date(purchase.blockTime * 1000).toString().split(" (")[0]
+
         const replacer = new RegExp("_", 'g')
-        let collection = purchase.collection.replace(replacer, " ") 
-        
-        let title = whale.length > 0 ? whale :  wallet
+        let collection = purchase.collection.replace(replacer, " ")
+
+        let title = whale.length > 0 ? whale : wallet
 
         let actionDone = "Bought"
         let color = "#00FFA3"
-        if(purchase.seller == wallet){
+        if (purchase.seller == wallet) {
             actionDone = "Sold"
             color = "#DC1FFF"
         }
 
 
         const embed = new MessageEmbed()
-          .setColor(color)
-          .setURL(`https://solscan.io/tx/${purchase.signature}`)
-          .setTitle(`${actionDone} ${collection} -> ${purchase.price}◎`) 
-          .setFooter(purchaseTime)
-          .setDescription(`By ${title}`);
+            .setColor(color)
+            .setURL(`https://solscan.io/tx/${purchase.signature}`)
+            .setTitle(`${actionDone} ${collection} -> ${purchase.price}◎`)
+            .setFooter(purchaseTime)
+            .setDescription(`By ${title}`);
 
         embeds.push(embed);
-      }
-      );
+    }
+    );
 
-      return embeds;
+    return embeds;
 };
 
 client.on('ready', () => {
