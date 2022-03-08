@@ -78,7 +78,10 @@ const getLastMsgs = async (wallet, whale) => {
         headers: { 'Content-Type': 'application/json' },
     }).then(response => {
         return response.json()
-    }).catch(err => { console.log(err); });
+    }).catch(err => { 
+        console.log(err);
+        return []
+     });
 
         let meResponse = await getRequest
 
