@@ -57,13 +57,19 @@ const resolveDomain = async(domain) => {
         undefined,
         new PublicKey("58PwtjSDuFHuUkYjH9BYnnQKHfwo9reZhC2zMJv9JPkx") // SOL TLD Authority
     );
-    const owner = await NameRegistryState.retrieve(
+    const owner = NameRegistryState.retrieve(
         new Connection(clusterApiUrl("mainnet-beta")),
         nameAccountKey
-    );
+    ).then(acct => {
+        return acct.owner.toBase58()
+    })
+    .catch( err => {
+        return `Could not resolve address ${domain}`
+    });
 
-    console.log(owner.owner.toBase58());
-    return owner.owner.toBase58()
+    console.log(owner);
+
+    return owner
 }
 
 const getLastMsgs = async (wallet, whale) => {
@@ -74,7 +80,7 @@ const getLastMsgs = async (wallet, whale) => {
         headers: { 'Content-Type': 'application/json' },
     }).then(response => {
         return response.json()
-    })  .catch(err => { console.log(err); });
+    }).catch(err => { console.log(err); });
 
         let meResponse = await getRequest
 
