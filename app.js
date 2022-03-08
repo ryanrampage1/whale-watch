@@ -27,7 +27,7 @@ client.on('messageCreate', async (msg) => {
         msg.reply(await resolveDomain(userArg))
     } else if(userCmd == commands.listWhales) {
         sendWhales(msg)
-    } else if(userCmd === commands.whale && useAddress && userArg.includes(`.sol`)) {
+    } else if(userCmd === commands.whale && useAddress && address.includes(`.sol`)) {
        
         let resolvedAddress = await resolveDomain(address)
         console.log(`${address} -> ${resolvedAddress}`)
