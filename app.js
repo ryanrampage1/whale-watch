@@ -34,24 +34,32 @@ client.on('messageCreate', async (msg) => {
             msg.reply(resolvedAddress)
         } else {
             const reply = await getLastMsgs(resolvedAddress, userArg);
-            msg.channel.send({ embeds: reply })
+            sendEmbeds(msg, reply)
         }
     } else if (userCmd === commands.whale && useAddress && userArg.length > 0) {
        
         const reply = await getLastMsgs(address, "");
-        msg.channel.send({ embeds: reply })
+        sendEmbeds(msg, reply)
     } else if (userCmd == commands.whale && userArg in whales) {
        
         var addy = addys[userArg]
         console.log(addy)
         const reply = await getLastMsgs(addy, userArg);
-        msg.channel.send({ embeds: reply })
+        sendEmbeds(msg, reply)
     } else {
         
         console.log('invalid input')
         msg.reply('Thats not a command, try again');
     }
 });
+
+const sendEmbeds = (msg, embeds) => {
+    if (embeds.length == 0) {
+        msg.reply('No purchases or sales found.')
+    } else { 
+        msg.channel.send({ embeds: reply })
+    }
+}
 
 const sendWhales = (msg) => {
     let whaleList = "Curent avaliable whales: "
@@ -90,10 +98,7 @@ const getLastMsgs = async (wallet, whale) => {
         const replacer = new RegExp("_", 'g')
         let collection = purchase.collection.replace(replacer, " ") 
         
-        let title = wallet
-        if(whale.length > 0) { 
-            title = whale 
-        }
+        let title = whale.length > 0 ? whale :  wallet
 
         let actionDone = "Bought"
         let color = "#00FFA3"
