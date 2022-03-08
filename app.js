@@ -66,10 +66,6 @@ client.on('messageCreate', async (msg) => {
     }
 });
 
-const sendEmbeds = (msg, embeds) => {
-
-}
-
 const sendWhales = (msg) => {
     let whaleList = "Curent avaliable whales: "
     for (let [key, value] of Object.entries(whales)) {
@@ -93,6 +89,7 @@ const getLastMsgs = async (wallet, whale) => {
     });
 
     let meResponse = await getRequest
+    console.console.log(meResponse);
 
     let last15 = meResponse.filter(action => (action.type == 'buy' || action.type == 'buyNow'))
         .slice(0, 10);
