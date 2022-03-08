@@ -27,6 +27,10 @@ client.on('messageCreate', async (msg) => {
         msg.reply(await resolveDomain(userArg))
     } else if(userCmd == commands.listWhales) {
         sendWhales(msg)
+    } else if(userCmd === commands.whale && useAddress && userArg.includes(`.sol`)) {
+        let address = await resolveDomain(userArg)
+        const reply = await getLastMsgs(address, userArg);
+        msg.channel.send({ embeds: reply })
     } else if (userCmd === commands.whale && useAddress && userArg.length > 0) {
         const reply = await getLastMsgs(address, "");
         msg.channel.send({ embeds: reply })
